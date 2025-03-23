@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 const ResultScreen = ({ route }) => {
-  const { capturedImage } = route.params;
+  const { capturedImage } = route.params; // Get the image passed from ScanScreen
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Captured Image</Text>
       {capturedImage ? (
-        <Image source={{ uri: `file://${capturedImage}` }} style={styles.image} />
+        <Image source={{ uri: capturedImage }} style={styles.image} />
       ) : (
         <Text style={styles.errorText}>No Image Captured</Text>
       )}
