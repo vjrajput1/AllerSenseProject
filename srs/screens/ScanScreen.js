@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 
-const ScanScreen = ({ navigation }) => {
-  const device = useCameraDevice('back'); // Get the back camera
+const ScanScreen = ({ navigation, setScanHistory }) => {
+  const device = useCameraDevice('back');
   const { hasPermission, requestPermission } = useCameraPermission();
   const cameraRef = useRef(null);
 
@@ -33,14 +33,18 @@ const ScanScreen = ({ navigation }) => {
   const captureImage = async () => {
     if (cameraRef.current) {
       try {
-        const photo = await cameraRef.current.takePhoto(); // Capture photo
+        const photo = await cameraRef.current.takePhoto();
         console.log('Captured Image Path:', photo.path);
-        navigation.navigate('ResultScreen', { capturedImage: `file://${photo.path}` }); // Pass image to result screen
+        
+        setScanHistory(prevHistory => [...prevHistory, `file://${photo.path}`]); // Store image
+  
+        navigation.navigate('ResultScreen', { capturedImage: `file://${photo.path}` });
       } catch (error) {
         console.error('Error capturing image:', error);
       }
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -57,9 +61,11 @@ const styles = StyleSheet.create({
   captureButton: {
     position: 'absolute',
     bottom: 50,
-    backgroundColor: '#007AFF',
-    padding: 15,
+    backgroundColor: '#000', // Black color
+    width: '70%', // Increase width
+    paddingVertical: 15,
     borderRadius: 10,
+    alignItems: 'center',
   },
   permissionButton: {
     marginTop: 20,
