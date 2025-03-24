@@ -5,29 +5,28 @@ const HomePage = ({ navigation, scanHistory }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>AllerSense</Text>
+
+      {/* Rectangular Image Below AllerSense */}
+      <Image source={require('../assets/banner.png')} style={styles.bannerImage} />
+
       <Text style={styles.subtitle}>Recent Scans</Text>
 
-      {/* Display list of scanned images */}
       <FlatList
         data={scanHistory}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <Image source={{ uri: item }} style={styles.image} />
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainer}>
+              <Image source={{ uri: item }} style={styles.image} />
+              <View style={styles.textContainer}>
+                <Text style={styles.smallTitle}>Snickers</Text>
+                <Text style={styles.details}>Findings: Contain Peanuts, Tree Nuts</Text>
+              </View>
+            </View>
+          </View>
         )}
         ListEmptyComponent={<Text style={styles.noImagesText}>No Scans Yet</Text>}
       />
-
-      {/* Image and Text in Row */}
-      <View style={styles.rowContainer}>
-        <Image
-          source={{ uri: 'https://your-image-url-here.com' }} // Replace with your image URL
-          style={styles.image}
-        />
-        <View style={styles.textContainer}>
-          <Text style={styles.smallTitle}>Kitkat Classic</Text>  {/* Smaller font for Kitkat Classic */}
-          <Text style={styles.details}>Findings: Contain Peanuts, Tree Nuts</Text>
-        </View>
-      </View>
 
       {/* Capture Button */}
       <TouchableOpacity style={styles.captureButton} onPress={() => navigation.navigate('ScanScreen')}>
@@ -37,45 +36,55 @@ const HomePage = ({ navigation, scanHistory }) => {
   );
 };
 
-const { width } = Dimensions.get('window');  // Get screen width to make responsive design
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F5F5', padding: 20 },
   title: { fontSize: 33, fontWeight: 'bold', textAlign: 'center', marginBottom: 12 },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-    marginTop: 9,
-    marginBottom: 9,
+  bannerImage: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
+    marginBottom: 12,
+    borderWidth: 2,       // Border width
+    borderRadius: 12,     // Rounded corners
+    borderColor: 'black', // Border color
+    paddingVertical: 10,  // Padding inside the border
+    paddingHorizontal: 20,
+    shadowColor: '#000',  // Shadow color
+    shadowOffset: { width: 2, height: 2 }, // Shadow direction
+    shadowOpacity: 0.3,  // Shadow transparency
+    shadowRadius: 4,     // Blur effect for shadow
+    elevation: 5,  
   },
-  smallTitle: {
-    fontSize: 14,  // Smaller font size for the Kitkat Classic text
-    fontWeight: 'bold',  // Optional: make it bold if desired
-  },
-  details: {
-    fontSize: 12,  // Smaller font for the details
-    color: 'gray',
-  },
+  subtitle: { fontSize: 18, fontWeight: 'bold', alignSelf: 'flex-start', marginBottom: 9 },
+  smallTitle: { fontSize: 14, backgroundColor: '#f8f8f8', fontWeight: 'bold' },
+  details: { fontSize: 12, color: 'gray' },
   image: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 35, // Circular Image
     marginRight: 15,
-    marginTop: 6,
-    marginBottom: 6,  // Add space between the image and the text
   },
   rowContainer: {
-    flexDirection: 'row',  // Align image and text in a row
-    alignItems: 'center',  // Vertically align both items
-    marginBottom: 20,  // Optional: space between image-text and next content
-    marginTop: 10,  // Optional: space between previous content and row
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
   },
-  textContainer: {
-    flex: 1,             // Take the remaining space
-    justifyContent: 'center', // Vertically center text
+  boxContainer: {
+    width: '99%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8', 
+    padding: 10,
+    borderRadius: 25, // Circular border for the box
+    shadowColor: '#000',  // Shadow color
+    shadowOffset: { width: 2, height: 2 }, // Shadow direction
+    shadowOpacity: 0.3,  // Shadow transparency
+    shadowRadius: 4,     // Blur effect for shadow
+    elevation: 5,  
   },
+  textContainer: { flex: 1, justifyContent: 'center' },
   noImagesText: { textAlign: 'center', fontSize: 18, color: 'gray', marginTop: 20 },
   captureButton: {
     backgroundColor: '#000',

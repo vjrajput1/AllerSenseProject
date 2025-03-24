@@ -34,21 +34,24 @@ const ScanScreen = ({ navigation, setScanHistory }) => {
     if (cameraRef.current) {
       try {
         const photo = await cameraRef.current.takePhoto();
-        console.log('Captured Image Path:', photo.path);
-        
-        setScanHistory(prevHistory => [...prevHistory, `file://${photo.path}`]); // Store image
-  
+        setScanHistory(prevHistory => [...prevHistory, `file://${photo.path}`]);
+
         navigation.navigate('ResultScreen', { capturedImage: `file://${photo.path}` });
       } catch (error) {
         console.error('Error capturing image:', error);
       }
     }
   };
-  
 
   return (
     <View style={styles.container}>
       <Camera ref={cameraRef} style={StyleSheet.absoluteFill} device={device} isActive={true} photo={true} />
+      
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonText}>←</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.captureButton} onPress={captureImage}>
         <Text style={styles.buttonText}>Capture</Text>
       </TouchableOpacity>
@@ -61,11 +64,20 @@ const styles = StyleSheet.create({
   captureButton: {
     position: 'absolute',
     bottom: 50,
-    backgroundColor: '#000', // Black color
-    width: '70%', // Increase width
+    backgroundColor: '#000',
+    width: '70%',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 30,
+    left: 20,
+    backgroundColor: '#000',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
   },
   permissionButton: {
     marginTop: 20,
@@ -74,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  errorText: { fontSize: 18, color: 'red', textAlign: 'center', marginTop: 20 },
+  errorText: { fontSize: 18, color: '#000', textAlign: 'center', marginTop: 20 },
 });
 
 export default ScanScreen;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 
-const { height } = Dimensions.get('window'); // Get screen height
+const { height, width } = Dimensions.get('window');
 
 const ResultScreen = ({ route, navigation }) => {
   const { capturedImage } = route.params;
@@ -9,18 +9,38 @@ const ResultScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Captured Image</Text>
+        <Text style={styles.title}>Scan Result</Text>
 
         {capturedImage ? (
-          <Image source={{ uri: capturedImage }} style={styles.image} />
+          <>
+            <Image source={{ uri: capturedImage }} style={styles.image} />
+            
+            {/* Results Container */}
+            <View style={styles.resultsContainer}>
+              <Text style={styles.productName}>Snickers</Text>
+              <Text style={styles.sectionTitle}>Contains:</Text>
+              
+              <View style={styles.allergenItem}>
+                <View style={styles.circle} />
+                <Text style={styles.allergenText}>Peanuts</Text>
+              </View>
+              
+              <View style={styles.allergenItem}>
+                <View style={styles.circle} />
+                <Text style={styles.allergenText}>Tree Nuts</Text>
+              </View>
+            </View>
+          </>
         ) : (
           <Text style={styles.errorText}>No Image Captured</Text>
         )}
       </ScrollView>
 
-      {/* OK Button (Same style as Capture button) */}
-      <TouchableOpacity style={styles.okButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.buttonText}>OK</Text>
+      <TouchableOpacity 
+        style={styles.okButton} 
+        onPress={() => navigation.navigate('HomePage')}
+      >
+        <Text style={styles.buttonText}>DONE</Text>
       </TouchableOpacity>
     </View>
   );
@@ -29,25 +49,65 @@ const ResultScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#F5F5F5', 
-    paddingHorizontal: 20, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+    backgroundColor: '#fff'
   },
   scrollContainer: { 
     alignItems: 'center', 
-    paddingBottom: 100 // Ensures space for the OK button
+    paddingBottom: 100 
   },
   title: { 
-    fontSize: 24, 
-    fontWeight: 'bold', 
-    marginVertical: 20 
+    fontSize: 28, 
+    fontWeight: '800', 
+    marginVertical: 25,
+    color: '#333'
   },
   image: { 
-    width: '100%', 
-    height: height * 0.5, // Set image height to 50% of screen height
-    borderRadius: 10, 
-    marginBottom: 20 
+    width: width * 0.9,
+    height: height * 0.4,
+    borderRadius: 12,
+    marginBottom: 25,
+    borderWidth: 1,
+    borderColor: '#e0e0e0'
+  },
+  resultsContainer: {
+    width: width * 0.9,
+    padding: 20,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  productName: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#000',
+    marginBottom: 15
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 1
+  },
+  allergenItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    marginLeft: 5
+  },
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#e74c3c',
+    marginRight: 12
+  },
+  allergenText: {
+    fontSize: 17,
+    color: '#666'
   },
   errorText: { 
     fontSize: 18, 
@@ -56,18 +116,19 @@ const styles = StyleSheet.create({
     marginTop: 20 
   },
   okButton: {
-    backgroundColor: '#000', // Black color (same as Capture button)
-    width: '70%', // Same width as Capture button
-    paddingVertical: 15, // Same padding as Capture button
+    backgroundColor: '#000',
+    width: width * 0.9,
+    padding: 16,
     borderRadius: 10,
     alignItems: 'center',
     position: 'absolute',
-    bottom: 40, // Ensures button is visible
+    bottom: 30,
+    alignSelf: 'center'
   },
   buttonText: { 
     color: '#fff', 
     fontSize: 18, 
-    fontWeight: 'bold' 
+    fontWeight: '600' 
   },
 });
 
